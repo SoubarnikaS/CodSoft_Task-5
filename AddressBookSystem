@@ -1,0 +1,309 @@
+TASK 5
+1. Create a Contact class to represent individual contacts. Include attributes such as name, phone number, email address, and any other relevant details.
+2. Implement an AddressBook class to manage the collection of contacts. Include methods to add a contact, remove a contact, search for a contact, and display all contacts.
+3. Design the user interface for the Address Book System. This can be a console-based interface or a graphical user interface (GUI) using libraries like Swing or JavaFX.
+4. Implement methods to read and write contact data to a storage medium, such as a file or a database.
+5. Allow users to interact with the Address Book System by providing options such as adding a new contact, editing an existing contact's information, searching for a contact, displaying all contacts, and
+exiting the application.
+6. Implement input validation to ensure that required fields are not left empty and that the contact data is in the correct format.
+
+Source Code :
+import java.util.*;
+import java.util.regex.Pattern;
+class AddressBook
+{
+    static Scanner sc = new Scanner(System.in);
+    static String name[] = new String[100];
+    static String contact[] = new String[100];
+    static String city[] = new String[100];
+    static String email[] = new String[100];
+    static int valid[] = new int[100];
+    static int numOfRecords = 0;
+    static int records = 0;
+    static int ID = 0;
+
+    public static void charCheck(String str,int i)
+    {
+        
+    }
+
+    public static void addRecord()
+    {
+        System.out.print("Enter the number of records you want to add : ");
+        records = sc.nextInt();
+        numOfRecords += records;
+        sc.nextLine();
+        System.out.println();
+
+        while(records != 0)
+        { 
+            --records;
+            valid[ID] = 1;
+            try
+            {
+                System.out.print("Enter the name : ");
+                String cname = sc.nextLine();
+                while(!Pattern.matches("^[a-zA-Z]+$",cname))
+                {
+                    System.out.println("``````Name should contain only characters!`````");
+                    System.out.print("Enter the name containing only alphabets : ");
+                    cname = sc.nextLine();
+                    System.out.println();
+                }
+                name[ID] = cname;
+            }
+            catch(Exception e)
+            {
+                System.out.println("An error occurred: " + e.getMessage());
+            }
+
+            try
+            {
+                System.out.print("Enter the contact number : ");
+                String ccontact = sc.nextLine();
+                while(!Pattern.matches("^[0-9]+$",ccontact))
+                {
+                    System.out.println("`````Enter only digits`````");
+                    System.out.print("Enter the contact number with only digits : ");
+                    ccontact = sc.nextLine();
+                    System.out.println();
+                }
+                contact[ID] = ccontact;
+            }
+            catch(Exception e)
+            {
+               System.out.println("An error occurred: " + e.getMessage());
+            }
+
+            try
+            {
+                System.out.print("Enter the city : ");
+                String ccity = sc.nextLine();
+                while(!Pattern.matches("^[a-zA-Z]+$",ccity))
+                {
+                    System.out.println("`````City should contain only characters!`````");
+                    System.out.print("Enter the city containing only alphabets : ");
+                    ccity = sc.nextLine();
+                    System.out.println();
+                }
+                city[ID] = ccity;
+            }
+            catch(Exception e)
+            {
+               System.out.println("An error occurred: " + e.getMessage());
+            }
+            
+            try
+            {
+                System.out.print("Enter the email address : ");
+                String cemail = sc.nextLine();
+                while(!Pattern.matches("^[A-Za-z0-9+_.-]+@(.+)$",cemail))
+                {
+                    System.out.println("`````Invalid email ``````");
+                    System.out.print("Enter a valid email address : ");
+                    cemail = sc.nextLine();
+                    System.out.println();
+                }
+                email[ID] = cemail;
+            }
+            catch(Exception e)
+            {
+                System.out.println("An error occurred: " + e.getMessage());
+            }
+            System.out.println("`````The ID for the record is : " + (ID + 1)+"`````");
+        }
+        
+        ID = ID + 1;
+        System.out.println();
+        System.out.println("Records added");
+        System.out.println();
+    }
+    public static void deleteRecord()
+    {
+        if(numOfRecords == 0)
+            System.out.println("``````No records left!`````");
+        else
+        {
+            System.out.print("Enter the ID of the record to be removed : ");
+            int removeRecord = sc.nextInt();
+            sc.nextLine();
+            
+            if (removeRecord >= 1 && removeRecord <= numOfRecords) 
+            {
+                name[removeRecord - 1] = "";
+                contact[removeRecord - 1] = "";
+                city[removeRecord - 1] = "";
+                email[removeRecord - 1] = "";
+                valid[removeRecord - 1] = -1;
+                numOfRecords--;
+                System.out.println("`````Record removed!`````");
+            }
+            else 
+                System.out.println("`````Invalid record ID``````");
+                
+            }
+    }
+
+    public static void searchRecord()
+    {
+        System.out.print("Enter the ID of the record you want to look up : ");
+        int search = sc.nextInt();
+        sc.nextLine();
+        
+        if(valid[search - 1] == -1)
+            System.out.println("`````Invalid record ID!`````");
+        else if(search >=1 && search <= numOfRecords)
+        {
+            System.out.println();
+            System.out.println("Name : " + name[search - 1]);
+            System.out.println("Contact : " + contact[search - 1]);
+            System.out.println("City : " + city[search - 1]);
+            System.out.println("Email : " + email[search - 1]);
+            System.out.println();
+        }
+        else
+            System.out.println("`````Invalid record ID!`````");
+    }
+
+    public static void editRecord()
+    {
+        System.out.print("Enter the ID of the record you want to edit : ");
+        int edit = sc.nextInt();
+        sc.nextLine();
+
+        if(valid[edit - 1] == -1)
+            System.out.println("`````Invalid record ID`````\n");
+    
+        else if(edit >= 1 && edit <= numOfRecords)
+        {
+            while(true)
+            {
+                System.out.println("1. Name");
+                System.out.println("2. Contact");
+                System.out.println("3. City");
+                System.out.println("4. Email");
+                System.out.println("5. Exit");
+
+                
+                System.out.print("Enter the detail you want to edit : ");
+                int editChoice = sc.nextInt();
+                sc.nextLine();
+                System.out.println();
+
+                switch(editChoice)
+                {
+                    case 1:
+
+                        System.out.print("Enter the new name : ");
+                        String newName = sc.nextLine();
+                        name[edit - 1] = newName;
+                        System.out.println("``````Updated!`````");
+                        System.out.println();
+                        break;
+                        
+                    case 2:
+                        
+                        System.out.print("Enter the new contact : ");
+                        String newContact = sc.nextLine();
+                        contact[edit - 1] = newContact;
+                        System.out.println("`````Updated!`````");
+                        System.out.println();
+                        break;
+
+                    case 3:
+                        
+                        System.out.print("Enter the new city : ");
+                        String newCity = sc.nextLine();
+                        city[edit - 1] = newCity;
+                        System.out.println("`````Updated!`````");
+                        System.out.println();
+                        break;
+
+                    case 4:
+                        
+                        System.out.print("Enter the new email : ");
+                        String newEmail = sc.nextLine();
+                        email[edit - 1] = newEmail;
+                        System.out.println("`````Updated!`````");
+                        System.out.println();
+                        break;
+
+                    case 5:
+                        return;
+
+                    default:
+                        System.out.println("`````Invalid Choice!`````");
+
+                }
+            }
+        }
+    }
+
+    public static void displayRecord()
+    {
+        if(numOfRecords == 0)
+                System.out.println("`````No records to display!\n`````");
+        else
+        {
+            System.out.println();
+            System.out.println("Name\tContact\tCity\tEmail");
+            for(int j = 0; (j < numOfRecords && valid[j] != -1); j++)
+                System.out.println(name[j] + "\t" + contact[j] + "\t" + city[j] + "\t" + email[j]);
+            System.out.println();
+        }
+    }
+    public static void main(String args[])
+    {
+        System.out.println("```````````````````````````````````````````````````````");
+        System.out.println("`                     Address Book                    `");
+        System.out.println("```````````````````````````````````````````````````````");
+        System.out.println();
+
+        
+        while(true)
+        {
+            System.out.println("1. Add a record");
+            System.out.println("2. Remove a record");
+            System.out.println("3. Search a record");
+            System.out.println("4. Edit a record");
+            System.out.println("5. Display all records");
+            System.out.println("6. Exit");
+            System.out.println();
+            System.out.print("Enter your choice : ");
+            int choice = sc.nextInt();
+
+            switch(choice)
+            {
+                case 1:
+
+                    addRecord();
+                    break;
+
+                case 2:
+                
+                    deleteRecord();
+                    break;
+                        
+                case 3:
+                    
+                    searchRecord();
+                    break;
+
+                case 4:
+                        
+                    editRecord();
+                    break;
+
+                case 5:
+                    
+                    displayRecord();
+                    break;
+                
+                case 6:
+                    System.exit(0);
+                    
+            }
+        }
+
+    }
+}
